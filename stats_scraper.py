@@ -1,11 +1,12 @@
 import requests
-import plotly.plotly as py
-import plotly.graph_objs as go
 from bs4 import BeautifulSoup as soup
+import matplotlib
+import matplotlib.pyplot as plt
+import os
 
 # This program uses BeautifulSoup to scrape foxsports for soccer stats and export
-# to 3 csv files - Goals, Assists, Saves.
-# Display leaders and ranks in graphs on plotly.
+# to csv files - Goals, Assists.
+# Display leaders and ranks in graphs with matplotlib.
 # Author: Leticia Garcia-Sainz
 
 page_link = "https://www.foxsports.com/soccer/stats?competition=2"
@@ -23,17 +24,14 @@ container = containers[0]
 # create csv files
 filename1 = "wisbb_goals.csv"
 filename2 = "wisbb_assists.csv"
-filename3 = "wisbb_saves.csv"
 
 f1 = open(filename1, "w")
 f2 = open(filename2, "w")
-f3 = open(filename3, "w")
 
 headers = "rank, player, value\n"
 
 f1.write(headers)
 f2.write(headers)
-f3.write(headers)
 
 name_list = []
 value_list = []
@@ -46,19 +44,23 @@ def findPlayer(filename):
         rank = p.find("span", {"class":"wisbb_leaderRank"})
         name = p.find("span", {"class":"wisbb_leaderName"})
         value = p.find("span", {"class":"wisbb_leaderValue"})
-
         filename.write(rank.text + "," + name.text + "," + value.text + "\n")
-
         # append names and values to list for plotly graph creation
         name_list.append(name.text)
         value_list.append(value.text)
 
-    # create plotly bar graph (created on their website)
-    data = [go.Bar(
-                x = name_list,
-                y = value_list
-    )]
-    py.plot(data, filename=title_container.text)
+    # create folder for graphs
+    if not os.path.exists("images"):
+        os.mkdir("images")
+
+    # create and save bar graphs
+    plt.bar(name_list, value_list)
+    # plt.set_title(title_container.text)
+    plt.xticks(rotation='82.5')
+    plt.tight_layout()
+    plt.savefig(f'images/{title_container.text}')
+    plt.close()
+
     # clear list for next function call
     del name_list[:]
     del value_list[:]
@@ -66,7 +68,6 @@ def findPlayer(filename):
 
 # loop through the "leaders" containers
 for container in containers:
-
     title_container = container.find("span", {"class":"wisbb_leaderTitle"})
 
     # find container for goals
@@ -76,7 +77,3 @@ for container in containers:
     # find container for assists
     elif (title_container.text == "Assists"):
         findPlayer(f2)
-
-    #  find container for Saves
-    elif (title_container.text == "Saves"):
-        findPlayer(f3)
