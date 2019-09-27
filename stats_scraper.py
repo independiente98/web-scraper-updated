@@ -51,7 +51,7 @@ def findPlayer(filename):
 
     # create bar charts
     plt.bar(name_list, value_list)
-    # plt.set_title(title_container.text)
+    plt.title(title_container.text)
     plt.xticks(rotation='82.5')
     plt.tight_layout()
     # save graph
