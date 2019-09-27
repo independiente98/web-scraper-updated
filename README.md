@@ -1,4 +1,4 @@
-How to Use:
+**How to Use:**
 
 Once you've copied the repository to your local machine and set up your virtual environment,
 run: 
