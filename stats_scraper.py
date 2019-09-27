@@ -22,8 +22,10 @@ containers = page_content.findAll("div", {"class":"wisbb_leaders"})
 container = containers[0]
 
 # create csv files
-filename1 = "wisbb_goals.csv"
-filename2 = "wisbb_assists.csv"
+if not os.path.exists("csv"):
+    os.mkdir("csv")
+filename1 = "csv/wisbb_goals.csv"
+filename2 = "csv/wisbb_assists.csv"
 
 f1 = open(filename1, "w")
 f2 = open(filename2, "w")
