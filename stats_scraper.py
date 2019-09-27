@@ -49,15 +49,14 @@ def findPlayer(filename):
         name_list.append(name.text)
         value_list.append(value.text)
 
-    # create folder for graphs
-    if not os.path.exists("images"):
-        os.mkdir("images")
-
-    # create and save bar graphs
+    # create bar charts
     plt.bar(name_list, value_list)
     # plt.set_title(title_container.text)
     plt.xticks(rotation='82.5')
     plt.tight_layout()
+    # save graph
+    if not os.path.exists("images"):
+        os.mkdir("images")
     plt.savefig(f'images/{title_container.text}')
     plt.close()
 
