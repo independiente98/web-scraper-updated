@@ -40,7 +40,7 @@ name_list = []
 value_list = []
 
 
-# create bar charts 
+# Create bar charts
 def plot_graph():
     y_pos = np.arange(len(name_list))
     plt.bar(y_pos, value_list)
@@ -54,7 +54,7 @@ def plot_graph():
     plt.close()
 
 
-# method to find player info within container and write to csv
+# Find player info within container and write to csv
 def findPlayer(filename):
     player_container = container.findAll("tr")
     p = player_container[0]
